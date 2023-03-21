@@ -47,9 +47,18 @@ const App = () => {
     };
     const foundPerson = persons.filter((person) => person.name === newName);
     if (foundPerson.length === 0) {
-      personService.create(newObj).then((returnedPersons) => {
-        setPersons(persons.concat(returnedPersons));
-      });
+      personService
+        .create(newObj)
+        .then((returnedPersons) => {
+          setPersons(persons.concat(returnedPersons));
+        })
+        .catch((error) => {
+          console.log(error.response.data.error);
+          setMessage(`${error.response.data.error}`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+        });
       setMessage(`Added ${newName}`);
       setTimeout(() => {
         setMessage(null);
